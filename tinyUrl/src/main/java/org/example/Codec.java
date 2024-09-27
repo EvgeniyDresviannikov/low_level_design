@@ -1,7 +1,7 @@
 package org.example;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Codec {
@@ -15,8 +15,8 @@ public class Codec {
     private AtomicLong counter;
 
     public Codec() {
-        this.shortToLongMap = new HashMap<>();
-        this.longToShortMap = new HashMap<>();
+        this.shortToLongMap = new ConcurrentHashMap<>();
+        this.longToShortMap = new ConcurrentHashMap<>();
         counter = new AtomicLong(1L);
     }
 
@@ -36,6 +36,7 @@ public class Codec {
         String shortUrl = BASE_URL + randomString;
         longToShortMap.put(longUrl, shortUrl);
         shortToLongMap.put(shortUrl, longUrl);
+
         return shortUrl;
     }
 
