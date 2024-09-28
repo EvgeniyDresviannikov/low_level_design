@@ -32,7 +32,6 @@ public class Cache<K, V> {
             this.storage.add(key, value);
             this.policy.keyAccessed(key);
         } catch (StorageFullException exception) {
-            System.out.println("Got storage full. Will try to evict.");
             K keyToRemove = policy.evict();
             if (keyToRemove == null) {
                 throw new RuntimeException("Unexpected State. Storage full and no key to evict.");
