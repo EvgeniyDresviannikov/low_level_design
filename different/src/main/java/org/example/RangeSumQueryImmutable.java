@@ -2,30 +2,23 @@ package org.example;
 
 import java.util.Arrays;
 
-// TODO rewrite using segment tree
-class RangeSumQuery {
+class RangeSumQueryImmutable {
+
 
     private int[] numsArr;
-    public int[] segmentSumArr;
+    private int[] segmentSumArr;
 
-    public RangeSumQuery(int[] nums) {
+    public RangeSumQueryImmutable(int[] nums) {
         int treeSize = 2*nums.length;
         segmentSumArr = new int[treeSize];
         numsArr = Arrays.copyOf(nums, nums.length);
 
         constructTree(0, nums.length-1, 0);
-
     }
-    public void update(int index, int val) {
-        int diff = val - numsArr[index];
-        numsArr[index] = val;
-        updateTree(index, diff, 0, numsArr.length-1, 0);
-    }
-
 
 
     public int sumRange(int left, int right) {
-       return sumRange(left, right, 0, numsArr.length-1, 0);
+        return sumRange(left, right, 0, numsArr.length-1, 0);
     }
 
     private void constructTree(int left, int right, int pos) {
@@ -38,26 +31,7 @@ class RangeSumQuery {
         constructTree(left, mid, 2*pos+1);
         constructTree(mid+1, right, 2*pos+2);
         segmentSumArr[pos] = segmentSumArr[2*pos+1] + segmentSumArr[2*pos+2];
-
     }
-
-    private void updateTree(int index, int diff, int low, int high, int pos) {
-        if (low == high && low == index) {
-            segmentSumArr[pos] += diff;
-            return;
-        }
-
-        if (index < low || index > high) return;
-
-        segmentSumArr[pos] += diff;
-
-        int mid = (low + high) / 2;
-
-        updateTree(index, diff, low, mid, 2*pos+1);
-        updateTree(index, diff, mid+1, high, 2*pos+2);
-
-    }
-
 
     private int sumRange(int left, int right, int low, int high, int pos) {
         if (left <= low && right >= high) {
@@ -78,5 +52,8 @@ class RangeSumQuery {
     }
 }
 
-
-
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray obj = new NumArray(nums);
+ * int param_1 = obj.sumRange(left,right);
+ */
